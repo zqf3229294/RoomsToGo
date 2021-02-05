@@ -1,6 +1,8 @@
 const repl = require('repl');
+const fs =require('fs');
+const path = "./log.txt";
 
-const r = repl.start({ prompt: '> ', eval: myEval }).setupHistory("./log.txt", myHistoryWrite);
+repl.start({ prompt: '> ', eval: myEval });
 
 const stock = new Map();
 const warehouse = new Map();
@@ -10,6 +12,7 @@ let cmdHistory = [];
 function processCmd(cmd) {
     cmd=cmd.trim();
     cmdHistory.push(cmd);
+    myHistoryWrite();
     let args = cmd.split(" ");
     let res = "";
     if (args[0]=="ADD" && args[1] == "PRODUCT") {
@@ -108,7 +111,7 @@ function processCmd(cmd) {
             }
         }
     } else {
-        res = "UNRECOGNISED COMMAND";
+        res = "UNRECOGNIZED COMMAND";
     }
     return res;
 }
@@ -117,16 +120,11 @@ function myEval(cmd, context, filename, callback) {
   callback(null, processCmd(cmd));
 }
 
-function myHistoryWrite(path, callback) {
+function myHistoryWrite() {
     if (cmdHistory.length==2) {
-        fs.writeFile(path, cmdHistory[0], function (err) {
-            if (err) return console.log(err);
-            console.log('error > ' + path);
-          });
-        fs.writeFile(path, cmdHistory[1], function (err) {
-            if (err) return console.log(err);
-            console.log('error > ' + path);
-          });
+        for (let i = 0; i < 2; i++) {
+            fs.appendFile(path, cmdHistory[i]+"\n", () =>{});
+        }
         cmdHistory = [];
     }
 }
