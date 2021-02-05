@@ -20,4 +20,4 @@
 >LIST WAREHOUSE WAREHOUSE#
 
 # Command History
-The command history is stored in the file "log.txt", the top record is the most recent command.
+The command history is stored in the file "log.txt", the bottom record is the most recent command.
